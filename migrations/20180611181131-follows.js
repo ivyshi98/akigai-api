@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, done) {
-  db.createTable('posts', {
+  db.createTable('follows', {
     id: {
       type: 'int',
       primaryKey: 'true',
@@ -26,7 +26,7 @@ exports.up = function(db, done) {
       type: 'int',
       notNull: true,
       foreignKey: {
-        name: 'charityIdPostsFk',
+        name: 'charityIdFollowsFk',
         table: 'charities',
         rules: {
           onDelete: 'CASCADE',
@@ -35,26 +35,25 @@ exports.up = function(db, done) {
         mapping: 'id'
       }
     },
-
-    text: {
-      type: 'string',
-      notNull: 'true',
-      length: 500
-    },
-
-    img: {
-      type: 'string',
-    },
-
-    date: {
-      type: 'string',
-    },
-
-  }, done);
+  
+    userId: {
+      type: 'int',
+      notNull: true,
+      foreignKey: {
+        name: 'userIdFollowsFk',
+        table: 'users',
+        rules: {
+          onDelete: 'CASCADE',
+          onUpdate: 'RESTRICT'
+        },
+        mapping: 'id'
+      }
+    }
+  }, done );
 };
 
 exports.down = function(db, done) {
-  db.dropTable('posts', done)
+  db.dropTable('follows', done)
 };
 
 exports._meta = {

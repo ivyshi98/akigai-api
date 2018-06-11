@@ -9,26 +9,31 @@ export class PostsController {
   constructor(
     @repository(PostsRepository.name) private postsRepo: PostsRepository,
     @repository(FollowsRepository.name) private followsRepo: FollowsRepository
-  ) {  
+  ) {
   }
 
-  @get('posts/{userId}')
+  @get('/posts/{userId}')
   async findCharityPosts(
-    @param.query.number('userId') userId: number)
-    {
-      var userFollowed = await this.followsRepo.find({where: {userId: userId}});
-      var charitiesFollowed: number[] = [];
-      for (var i = 0; i < userFollowed.length; i++) {
-        charitiesFollowed.push(userFollowed[i].charityId);
-      }
-
-      var followedPosts = await this.postsRepo.find({
-        where: {
-          charityId: {inq: charitiesFollowed}
-        }
-      });
-
-      return followedPosts
-
+    @param.query.number('userId') userId: number) {
+    var userFollowed = await this.followsRepo.find({ where: { userId: userId } });
+    var charitiesFollowed: number[] = [];
+    for (var i = 0; i < userFollowed.length; i++) {
+      charitiesFollowed.push(userFollowed[i].charityId);
     }
+
+    var followedPosts = await this.postsRepo.find({
+      where: {
+        charityId: { inq: charitiesFollowed }
+      }
+    });
+    {
+      return followedPosts
+    }
+  
+  }
+
+  @post('/posts')
+  async createPost(@requestBody() post: Posts) {
+    return await this.postsRepo.create(post);
+  }
 }

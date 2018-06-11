@@ -4,10 +4,6 @@ var dbm;
 var type;
 var seed;
 
-/**
-  * We receive the dbmigrate dependency from dbmigrate initially.
-  * This enables us to not have to rely on NODE_PATH.
-  */
 exports.setup = function(options, seedLink) {
   dbm = options.dbmigrate;
   type = dbm.dataType;
@@ -50,11 +46,6 @@ exports.up = function(db, done) {
       type: 'string',
       length: 10,
       notNull: true
-    },
-
-    billingAddressId: {
-      type: 'int',
-      notNull: true,
     },
 
   }, done);
