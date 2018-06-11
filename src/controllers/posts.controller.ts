@@ -38,6 +38,7 @@ export class PostsController {
         return followedPosts
       }
 
+
     } catch(err) {
     throw new HttpErrors.BadRequest('JWT token invalid');
   }
