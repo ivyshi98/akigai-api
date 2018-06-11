@@ -2,6 +2,7 @@ import { repository } from "@loopback/repository";
 import { UsersRepository } from "../repositories/users.repository";
 import { post, requestBody, HttpErrors } from "@loopback/rest";
 import { Login } from "../models/login";
+import {sign, verify} from 'jsonwebtoken';
 
 export class LoginController {
 
@@ -24,10 +25,10 @@ export class LoginController {
         }));
 
         if (!userExists) {
-            throw new HttpErrors.Unauthorized('invalid credentials');
+            throw new HttpErrors.Unauthorized('user does not exist');
         }
 
-        return await this.userRepo.findOne({
+        var currentUser = await this.userRepo.findOne({
             where: {
                 and: [
                     { username: login.username },
@@ -35,5 +36,24 @@ export class LoginController {
                 ],
             },
         });
+
+        var jwt = sign(
+            {
+              user: {
+                id: currentUser.id,
+                firstname: currentUser.firstname,
+                email: currentUser.email
+              },
+            },
+            'encryption',
+            {
+              issuer: 'auth.akigai',
+              audience: 'akigai',
+            },
+          );
+          
+          return {
+            token: jwt,
+          };
+        }
     }
-}

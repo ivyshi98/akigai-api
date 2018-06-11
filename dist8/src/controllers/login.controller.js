@@ -16,6 +16,7 @@ const repository_1 = require("@loopback/repository");
 const users_repository_1 = require("../repositories/users.repository");
 const rest_1 = require("@loopback/rest");
 const login_1 = require("../models/login");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -31,9 +32,9 @@ let LoginController = class LoginController {
             ],
         }));
         if (!userExists) {
-            throw new rest_1.HttpErrors.Unauthorized('invalid credentials');
+            throw new rest_1.HttpErrors.Unauthorized('user does not exist');
         }
-        return await this.userRepo.findOne({
+        var currentUser = await this.userRepo.findOne({
             where: {
                 and: [
                     { username: login.username },
@@ -41,6 +42,19 @@ let LoginController = class LoginController {
                 ],
             },
         });
+        var jwt = jsonwebtoken_1.sign({
+            user: {
+                id: currentUser.id,
+                firstname: currentUser.firstname,
+                email: currentUser.email
+            },
+        }, 'encryption', {
+            issuer: 'auth.akigai',
+            audience: 'akigai',
+        });
+        return {
+            token: jwt,
+        };
     }
 };
 __decorate([
