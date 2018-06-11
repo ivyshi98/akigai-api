@@ -39,7 +39,7 @@ export class billingAddresses extends Entity {
     state: string;
 
     @property({
-        type: 'int',
+        type: 'number',
     })
     postCode: number;
 

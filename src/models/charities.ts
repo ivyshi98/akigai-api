@@ -28,13 +28,13 @@ export class Charities extends Entity {
     logo: string;
 
     @property({
-        type: 'int',
+        type: 'number',
         required: true
     })
     charityAddressId: number;
 
     @property({
-        type: 'int',
+        type: 'number',
         required: true
     })
     bankId: number;
