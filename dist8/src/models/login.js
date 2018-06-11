@@ -21,18 +21,18 @@ __decorate([
 ], Login.prototype, "id", void 0);
 __decorate([
     repository_1.property({
-        type: 'number',
+        type: 'string',
         id: true
     }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Login.prototype, "username", void 0);
 __decorate([
     repository_1.property({
-        type: 'number',
+        type: 'string',
         id: true
     }),
-    __metadata("design:type", Number)
-], Login.prototype, "email", void 0);
+    __metadata("design:type", String)
+], Login.prototype, "password", void 0);
 Login = __decorate([
     repository_1.model()
 ], Login);

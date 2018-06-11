@@ -12,25 +12,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const rest_1 = require("@loopback/rest");
 const repository_1 = require("@loopback/repository");
 const users_repository_1 = require("../repositories/users.repository");
+const rest_1 = require("@loopback/rest");
 const users_1 = require("../models/users");
 let RegistrationController = class RegistrationController {
-    constructor(usersRepo) {
-        this.usersRepo = usersRepo;
+    constructor(userRepo) {
+        this.userRepo = userRepo;
     }
-    async requestRegistration(user) {
-        return await this.usersRepo.create(user);
+    async createUser(newUser) {
+        if (!newUser.username || !newUser.firstname || !newUser.lastname || !newUser.email || !newUser.password) {
+            throw new rest_1.HttpErrors.BadRequest('missing data');
+        }
+        let userExists = !!(await this.userRepo.count({ username: newUser.username } || { email: newUser.email }));
+        if (userExists) {
+            throw new rest_1.HttpErrors.BadRequest('user already exists');
+        }
+        return await this.userRepo.create(newUser);
     }
 };
 __decorate([
-    rest_1.post("/registration"),
+    rest_1.post('/registration'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.Users]),
     __metadata("design:returntype", Promise)
-], RegistrationController.prototype, "requestRegistration", null);
+], RegistrationController.prototype, "createUser", null);
 RegistrationController = __decorate([
     __param(0, repository_1.repository(users_repository_1.UsersRepository.name)),
     __metadata("design:paramtypes", [users_repository_1.UsersRepository])

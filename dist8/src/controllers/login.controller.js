@@ -12,22 +12,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const rest_1 = require("@loopback/rest");
 const repository_1 = require("@loopback/repository");
 const users_repository_1 = require("../repositories/users.repository");
-const users_1 = require("../models/users");
+const rest_1 = require("@loopback/rest");
+const login_1 = require("../models/login");
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    async loginUser(user) {
-        if (!user.username || !user.password) {
+    async login(login) {
+        if (!login.username || !login.password) {
             throw new rest_1.HttpErrors.Unauthorized('invalid credentials');
         }
         let userExists = !!(await this.userRepo.count({
             and: [
-                { username: user.username },
-                { password: user.password },
+                { username: login.username },
+                { password: login.password },
             ],
         }));
         if (!userExists) {
@@ -36,10 +36,10 @@ let LoginController = class LoginController {
         return await this.userRepo.findOne({
             where: {
                 and: [
-                    { username: user.username },
-                    { password: user.password }
+                    { username: login.username },
+                    { password: login.password }
                 ],
-            }
+            },
         });
     }
 };
@@ -47,9 +47,9 @@ __decorate([
     rest_1.post('/login'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [users_1.Users]),
+    __metadata("design:paramtypes", [login_1.Login]),
     __metadata("design:returntype", Promise)
-], LoginController.prototype, "loginUser", null);
+], LoginController.prototype, "login", null);
 LoginController = __decorate([
     __param(0, repository_1.repository(users_repository_1.UsersRepository.name)),
     __metadata("design:paramtypes", [users_repository_1.UsersRepository])

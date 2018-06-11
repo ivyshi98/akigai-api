@@ -10,15 +10,15 @@ export class Login extends Entity {
     id?: number;
 
     @property({
-        type: 'number',
+        type: 'string',
         id: true
     })
-    username: number;
+    username: string;
 
     @property({
-        type: 'number',
+        type: 'string',
         id: true
     })
-    email: number;
+    password: string;
 
 }
