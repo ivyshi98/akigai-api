@@ -16,6 +16,8 @@ const repository_1 = require("@loopback/repository");
 const users_repository_1 = require("../repositories/users.repository");
 const rest_1 = require("@loopback/rest");
 const login_1 = require("../models/login");
+const jsonwebtoken_1 = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -27,20 +29,32 @@ let LoginController = class LoginController {
         let userExists = !!(await this.userRepo.count({
             and: [
                 { username: login.username },
-                { password: login.password },
             ],
         }));
         if (!userExists) {
-            throw new rest_1.HttpErrors.Unauthorized('invalid credentials');
+            throw new rest_1.HttpErrors.Unauthorized('user does not exist');
         }
-        return await this.userRepo.findOne({
-            where: {
-                and: [
-                    { username: login.username },
-                    { password: login.password }
-                ],
-            },
-        });
+        var users = await this.userRepo.find();
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            if (user.username == login.username && await bcrypt.compare(login.password, user.password)) {
+                //return user;
+                var jwt = jsonwebtoken_1.sign({
+                    user: {
+                        id: user.id,
+                        firstname: user.firstname,
+                        email: user.email
+                    },
+                }, 'encryption', {
+                    issuer: 'auth.akigai',
+                    audience: 'akigai',
+                });
+                return {
+                    token: jwt,
+                };
+            }
+            //if (currentUser.username == login.username && await bcrypt.compare(login.password, currentUser.password)){
+        }
     }
 };
 __decorate([

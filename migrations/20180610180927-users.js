@@ -44,7 +44,7 @@ exports.up = function(db, done) {
 
     password: {
       type: 'string',
-      length: 10,
+      length: 2048,
       notNull: true
     },
 

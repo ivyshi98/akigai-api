@@ -18,11 +18,11 @@ export class LoginController {
         if (!login.username || !login.password) {
             throw new HttpErrors.Unauthorized('invalid credentials');
         }
+      
 
         let userExists: boolean = !!(await this.userRepo.count({
             and: [
                 { username: login.username },
-                { password: login.password },
             ],
         }));
 
@@ -30,24 +30,18 @@ export class LoginController {
             throw new HttpErrors.Unauthorized('user does not exist');
         }
 
-        
+        var users = await this.userRepo.find();
 
-        var currentUser = await this.userRepo.findOne({
-            where: {
-                and: [
-                    { username: login.username },
-                    { password: login.password }
-                ],
-            },
-        });
-
-        if (currentUser.email == login.email && await bcrypt.compare(login.password, currentUser.password)){
-            var jwt = sign(
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            if (user.username == login.username && await bcrypt.compare(login.password, user.password)) {
+                //return user;
+                var jwt = sign(
                 {
                   user: {
-                    id: currentUser.id,
-                    firstname: currentUser.firstname,
-                    email: currentUser.email
+                    id: user.id,
+                    firstname: user.firstname,
+                    email: user.email
                   },
                 },
                 'encryption',
@@ -60,6 +54,8 @@ export class LoginController {
               return {
                 token: jwt,
               };
-        }
+            }
+   
+            }
         }
     }

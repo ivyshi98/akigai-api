@@ -35,13 +35,18 @@ export class RegistrationController {
         userToStore.id = newUser.id;
         userToStore.firstname = newUser.firstname;
         userToStore.lastname = newUser.lastname;
+        userToStore.username = newUser.username;
         userToStore.email = newUser.email;
         userToStore.password = hashedPassword;
+
+        //console.log(userToStore);
 
         let storedUser = await this.userRepo.create(userToStore);
         storedUser.password = "";
           
-        return await this.userRepo.create(storedUser);
+        return storedUser;
+
+       //return await this.userRepo.create(newUser);
     }
 }
 

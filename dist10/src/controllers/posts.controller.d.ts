@@ -5,6 +5,6 @@ export declare class PostsController {
     private postsRepo;
     private followsRepo;
     constructor(postsRepo: PostsRepository, followsRepo: FollowsRepository);
-    findCharityPosts(userId: number): Promise<Posts[]>;
+    findCharityPosts(userId: number, jwt: string): Promise<Posts[]>;
     createPost(post: Posts): Promise<Posts>;
 }

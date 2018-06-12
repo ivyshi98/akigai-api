@@ -17,24 +17,34 @@ const repository_1 = require("@loopback/repository");
 const posts_repository_1 = require("../repositories/posts.repository");
 const posts_1 = require("../models/posts");
 const follows_repository_1 = require("../repositories/follows.repository");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let PostsController = class PostsController {
     constructor(postsRepo, followsRepo) {
         this.postsRepo = postsRepo;
         this.followsRepo = followsRepo;
     }
-    async findCharityPosts(userId) {
-        var userFollowed = await this.followsRepo.find({ where: { userId: userId } });
-        var charitiesFollowed = [];
-        for (var i = 0; i < userFollowed.length; i++) {
-            charitiesFollowed.push(userFollowed[i].charityId);
-        }
-        var followedPosts = await this.postsRepo.find({
-            where: {
-                charityId: { inq: charitiesFollowed }
+    async findCharityPosts(userId, jwt) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            console.log(jwtBody);
+            var userFollowed = await this.followsRepo.find({ where: { userId: userId } });
+            var charitiesFollowed = [];
+            for (var i = 0; i < userFollowed.length; i++) {
+                charitiesFollowed.push(userFollowed[i].charityId);
             }
-        });
-        {
-            return followedPosts;
+            var followedPosts = await this.postsRepo.find({
+                where: {
+                    charityId: { inq: charitiesFollowed }
+                }
+            });
+            {
+                return followedPosts;
+            }
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
     async createPost(post) {
@@ -44,8 +54,9 @@ let PostsController = class PostsController {
 __decorate([
     rest_1.get('/posts/{userId}'),
     __param(0, rest_1.param.query.number('userId')),
+    __param(1, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "findCharityPosts", null);
 __decorate([

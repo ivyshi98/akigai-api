@@ -16,12 +16,22 @@ const rest_1 = require("@loopback/rest");
 const repository_1 = require("@loopback/repository");
 const charities_repository_1 = require("../repositories/charities.repository");
 const charities_1 = require("../models/charities");
+const jsonwebtoken_1 = require("jsonwebtoken");
 let CharitiesController = class CharitiesController {
     constructor(charitiesRepo) {
         this.charitiesRepo = charitiesRepo;
     }
-    async findCharities() {
-        return await this.charitiesRepo.find();
+    async findCharities(jwt) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            console.log(jwtBody);
+            return await this.charitiesRepo.find();
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
     }
     async postCharities(charity) {
         return await this.charitiesRepo.create(charity);
@@ -29,8 +39,9 @@ let CharitiesController = class CharitiesController {
 };
 __decorate([
     rest_1.get('/allCharities'),
+    __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CharitiesController.prototype, "findCharities", null);
 __decorate([
