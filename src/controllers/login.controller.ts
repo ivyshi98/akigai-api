@@ -2,7 +2,9 @@ import { repository } from "@loopback/repository";
 import { UsersRepository } from "../repositories/users.repository";
 import { post, requestBody, HttpErrors } from "@loopback/rest";
 import { Login } from "../models/login";
-import {sign, verify} from 'jsonwebtoken';
+import { sign, verify} from 'jsonwebtoken'
+
+import * as bcrypt from 'bcrypt';
 
 export class LoginController {
 
@@ -28,6 +30,8 @@ export class LoginController {
             throw new HttpErrors.Unauthorized('user does not exist');
         }
 
+        
+
         var currentUser = await this.userRepo.findOne({
             where: {
                 and: [
@@ -37,23 +41,25 @@ export class LoginController {
             },
         });
 
-        var jwt = sign(
-            {
-              user: {
-                id: currentUser.id,
-                firstname: currentUser.firstname,
-                email: currentUser.email
-              },
-            },
-            'encryption',
-            {
-              issuer: 'auth.akigai',
-              audience: 'akigai',
-            },
-          );
-          
-          return {
-            token: jwt,
-          };
+        if (currentUser.email == login.email && await bcrypt.compare(login.password, currentUser.password)){
+            var jwt = sign(
+                {
+                  user: {
+                    id: currentUser.id,
+                    firstname: currentUser.firstname,
+                    email: currentUser.email
+                  },
+                },
+                'encryption',
+                {
+                  issuer: 'auth.akigai',
+                  audience: 'akigai',
+                },
+              );
+              
+              return {
+                token: jwt,
+              };
+        }
         }
     }

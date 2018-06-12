@@ -3,6 +3,8 @@ import { UsersRepository } from "../repositories/users.repository";
 import { post, requestBody, HttpErrors } from "@loopback/rest";
 import { Users } from "../models/users";
 
+import * as bcrypt from 'bcrypt';
+
 export class RegistrationController {
 
     constructor(
@@ -11,6 +13,9 @@ export class RegistrationController {
 
     @post('/registration')
     async createUser(@requestBody() newUser: Users): Promise<any> {
+
+
+
 
         if (!newUser.username || !newUser.firstname || !newUser.lastname || !newUser.email || !newUser.password) {
             throw new HttpErrors.BadRequest('missing data');
@@ -23,7 +28,20 @@ export class RegistrationController {
           if (userExists) {
             throw new HttpErrors.BadRequest('user already exists');
           }
+
+          let hashedPassword = await bcrypt.hash(newUser.password, 10);
+
+        var userToStore = new Users();
+        userToStore.id = newUser.id;
+        userToStore.firstname = newUser.firstname;
+        userToStore.lastname = newUser.lastname;
+        userToStore.email = newUser.email;
+        userToStore.password = hashedPassword;
+
+        let storedUser = await this.userRepo.create(userToStore);
+        storedUser.password = "";
           
-        return await this.userRepo.create(newUser);
+        return await this.userRepo.create(storedUser);
     }
 }
+

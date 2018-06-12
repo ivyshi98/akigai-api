@@ -2,15 +2,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("@loopback/rest");
 const sequence_1 = require("./sequence");
+const repository_1 = require("@loopback/repository");
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
 const boot_1 = require("@loopback/boot");
 /* tslint:enable:no-unused-variable */
-class AkigaiApiApplication extends boot_1.BootMixin(rest_1.RestApplication) {
+class AkigaiApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin(rest_1.RestApplication)) {
     constructor(options) {
         super(options);
         // Set up the custom sequence
         this.sequence(sequence_1.MySequence);
+        var dataSourceConfig = new repository_1.juggler.DataSource({
+            name: "db",
+            connector: "loopback-connector-mysql",
+            host: 'localhost',
+            port: 3306,
+            database: 'akigai',
+            user: 'root',
+            password: 'Qaz123pl,',
+        });
+        this.dataSource(dataSourceConfig);
         this.projectRoot = __dirname;
         // Customize @loopback/boot Booter Conventions here
         this.bootOptions = {
