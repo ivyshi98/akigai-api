@@ -36,9 +36,9 @@ let PostsController = class PostsController {
             for (var i = 0; i < userFollowed.length; i++) {
                 charitiesFollowed.push(userFollowed[i].charityId);
             }
-            /////////
             var allCharities = await this.charitiesRepo.find();
-            var charityIdToName = {}; // charity ID -> charity name
+            var charityIdToName = {};
+            var charityIdToLogo = {}; // charity ID -> charity name
             var postProperties = [];
             var followedPosts = await this.postsRepo.find({
                 where: {
@@ -48,6 +48,7 @@ let PostsController = class PostsController {
             for (var i = 0; i < allCharities.length; ++i) {
                 let charity = allCharities[i];
                 charityIdToName[charity.id] = charity.name;
+                charityIdToLogo[charity.id] = charity.logo;
             }
             for (var i = 0; i < followedPosts.length; ++i) {
                 let { id, text, img, charityId, date } = followedPosts[i];
@@ -57,6 +58,7 @@ let PostsController = class PostsController {
                     img,
                     date,
                     charityName: charityIdToName[charityId],
+                    charityLogo: charityIdToLogo[charityId],
                 });
             }
             return postProperties;
