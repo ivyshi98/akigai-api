@@ -17,11 +17,13 @@ const repository_1 = require("@loopback/repository");
 const posts_repository_1 = require("../repositories/posts.repository");
 const posts_1 = require("../models/posts");
 const follows_repository_1 = require("../repositories/follows.repository");
+const charities_repository_1 = require("../repositories/charities.repository");
 const jsonwebtoken_1 = require("jsonwebtoken");
 let PostsController = class PostsController {
-    constructor(postsRepo, followsRepo) {
+    constructor(postsRepo, followsRepo, charitiesRepo) {
         this.postsRepo = postsRepo;
         this.followsRepo = followsRepo;
+        this.charitiesRepo = charitiesRepo;
     }
     async findCharityPosts(userId, jwt) {
         if (!jwt)
@@ -34,14 +36,60 @@ let PostsController = class PostsController {
             for (var i = 0; i < userFollowed.length; i++) {
                 charitiesFollowed.push(userFollowed[i].charityId);
             }
+            /////////
+            var allCharities = await this.charitiesRepo.find();
+            var charityIdToName = {}; // charity ID -> charity name
+            var postProperties = [];
             var followedPosts = await this.postsRepo.find({
                 where: {
                     charityId: { inq: charitiesFollowed }
                 }
             });
-            {
-                return followedPosts;
+            for (var i = 0; i < allCharities.length; ++i) {
+                let charity = allCharities[i];
+                charityIdToName[charity.id] = charity.name;
             }
+            for (var i = 0; i < followedPosts.length; ++i) {
+                let { id, text, img, charityId } = followedPosts[i];
+                console.log(charityId);
+                postProperties.push({
+                    id,
+                    text,
+                    img,
+                    charityName: charityIdToName[charityId],
+                });
+            }
+            return postProperties;
+            ////////
+            // var followedPosts = await this.postsRepo.find({
+            //   where: {
+            //     charityId: { inq: charitiesFollowed }
+            //   }
+            // });
+            // var postsProperties: Array<object> = [];
+            // var intermediate: object;
+            // for (var i = 0; i < followedPosts.length; i++) {
+            //   var postsId = followedPosts[i].id;
+            //   var postsText = followedPosts[i].text;
+            //   var postsImg = followedPosts[i].img;
+            //   var charityId = followedPosts[i].charityId;
+            //   var charityName = 
+            //   for (var j=0; j < allCharities.length; j++) {
+            //     if (allCharities[j].charityId = followedPosts[i].charityId) {
+            //       var charityName = allCharities[j].name;
+            //       intermediate = {
+            //         id: <number> postsId,
+            //         text: <string> postsText,
+            //         img: <string> postsImg,
+            //         charityName: <string> charityName,
+            //       }
+            //       postsProperties.push(intermediate);
+            //     }
+            //   }
+            // }
+            // {
+            //   return postsProperties
+            // }
         }
         catch (err) {
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
@@ -52,7 +100,7 @@ let PostsController = class PostsController {
     }
 };
 __decorate([
-    rest_1.get('/posts/{userId}'),
+    rest_1.get('/posts'),
     __param(0, rest_1.param.query.number('userId')),
     __param(1, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
@@ -69,8 +117,10 @@ __decorate([
 PostsController = __decorate([
     __param(0, repository_1.repository(posts_repository_1.PostsRepository.name)),
     __param(1, repository_1.repository(follows_repository_1.FollowsRepository.name)),
+    __param(2, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
     __metadata("design:paramtypes", [posts_repository_1.PostsRepository,
-        follows_repository_1.FollowsRepository])
+        follows_repository_1.FollowsRepository,
+        charities_repository_1.CharitiesRepository])
 ], PostsController);
 exports.PostsController = PostsController;
 //# sourceMappingURL=posts.controller.js.map
