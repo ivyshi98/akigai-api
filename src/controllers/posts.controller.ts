@@ -48,11 +48,12 @@ export class PostsController {
       }
 
       for (var i = 0; i < followedPosts.length; ++i) {
-        let { id, text, img, charityId } = followedPosts[i];
+        let { id, text, img, charityId, date } = followedPosts[i];
         postProperties.push({
           id,
           text,
           img,
+          date,
           charityName: charityIdToName[charityId as number],
         });
       }

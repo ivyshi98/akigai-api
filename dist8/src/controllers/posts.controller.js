@@ -50,12 +50,12 @@ let PostsController = class PostsController {
                 charityIdToName[charity.id] = charity.name;
             }
             for (var i = 0; i < followedPosts.length; ++i) {
-                let { id, text, img, charityId } = followedPosts[i];
-                console.log(charityId);
+                let { id, text, img, charityId, date } = followedPosts[i];
                 postProperties.push({
                     id,
                     text,
                     img,
+                    date,
                     charityName: charityIdToName[charityId],
                 });
             }
