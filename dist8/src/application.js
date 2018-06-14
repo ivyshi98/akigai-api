@@ -12,6 +12,12 @@ class AkigaiApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin
         super(options);
         // Set up the custom sequence
         this.sequence(sequence_1.MySequence);
+        var environment = process.env.NODE_ENV;
+        var databaseName = null;
+        var databaseUsername = 'root';
+        if (environment == "amanda") {
+            databaseName = process.env.DATABASE_NAME;
+        }
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
             connector: "loopback-connector-mysql",
