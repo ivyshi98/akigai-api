@@ -22,7 +22,7 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
       port: 3306,
       database: 'akigai',
       user: 'root',
-      password: '11002288',
+      password: 'Qaz123pl,',
     });
     this.dataSource(dataSourceConfig);
 
