@@ -2,7 +2,9 @@ import { repository } from "@loopback/repository";
 import { UsersRepository } from "../repositories/users.repository";
 import { post, requestBody, HttpErrors } from "@loopback/rest";
 import { Login } from "../models/login";
-import {sign, verify} from 'jsonwebtoken';
+import { sign, verify} from 'jsonwebtoken'
+
+import * as bcrypt from 'bcrypt';
 
 export class LoginController {
 
@@ -16,11 +18,11 @@ export class LoginController {
         if (!login.username || !login.password) {
             throw new HttpErrors.Unauthorized('invalid credentials');
         }
+      
 
         let userExists: boolean = !!(await this.userRepo.count({
             and: [
                 { username: login.username },
-                { password: login.password },
             ],
         }));
 

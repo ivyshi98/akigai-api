@@ -9,23 +9,42 @@ export class CharitiesController {
     @repository(CharitiesRepository.name) private charitiesRepo: CharitiesRepository
   ) {}
 
+  //get all charities
+  //for charity list page
   @get('/allCharities')
     
   async findCharities(@param.query.string('jwt') jwt: string): Promise<Charities[]> {
     if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
-
+    var allCharities = await this.charitiesRepo.find();
     try {
       var jwtBody = verify(jwt, 'encryption');
-      console.log(jwtBody);
       return await this.charitiesRepo.find();
+      
     } catch (err) {
       throw new HttpErrors.BadRequest('JWT token invalid');
     }
     }
 
-    @post("/charities")
+  //create new charities
+    @post('/charities')
     async postCharities (@requestBody() charity: Charities) {
     return await this.charitiesRepo.create(charity);
   }
-}
+
+  //get one charity by charity id
+  //for charity detail page
+  @get('/charity/{id}') //:id
+        async findCharityById(@param.path.number('id') id: number): Promise<Charities> {
+            let idExists: boolean = !!(await this.charitiesRepo.count({id}));
+            if (!idExists){
+                throw new HttpErrors.BadRequest(`user ID ${id} does not exist`);
+            }
+            return await this.charitiesRepo.findById(id);
+        }
+  
+ //add charity to user favourite list 
+ //for favourite on charity list page 
+//  @post()
+//   async addCharityToFavourite()
+} 
 
