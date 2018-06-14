@@ -58,7 +58,11 @@ let Controller = class Controller {
         //traverse through the charity ids array to get these charities 
         for (var i = 0; i < charitiesFollowed.length; i++) {
             favouriteCharitiesList.push(await this.charitiesRepo.findById(charitiesFollowed[i]));
+<<<<<<< HEAD
             console.log(favouriteCharitiesList);
+=======
+            favouriteCharitiesList;
+>>>>>>> origin/master
         }
         return favouriteCharitiesList;
     }

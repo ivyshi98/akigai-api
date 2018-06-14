@@ -66,6 +66,7 @@ export class Controller {
       favouriteCharitiesList.push(await this.charitiesRepo.findById(charitiesFollowed[i]));
       console.log(favouriteCharitiesList);
 
+
     }
 
     return favouriteCharitiesList;
