@@ -5,4 +5,5 @@ export declare class CharitiesController {
     constructor(charitiesRepo: CharitiesRepository);
     findCharities(jwt: string): Promise<Charities[]>;
     postCharities(charity: Charities): Promise<Charities>;
+    findCharityById(id: number): Promise<Charities>;
 }
