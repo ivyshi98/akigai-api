@@ -17,6 +17,7 @@ const users_repository_1 = require("../repositories/users.repository");
 const rest_1 = require("@loopback/rest");
 const login_1 = require("../models/login");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
@@ -28,35 +29,30 @@ let LoginController = class LoginController {
         let userExists = !!(await this.userRepo.count({
             and: [
                 { username: login.username },
-                { password: login.password },
             ],
         }));
         if (!userExists) {
             throw new rest_1.HttpErrors.Unauthorized('user does not exist');
         }
-        var currentUser = await this.userRepo.findOne({
-            where: {
-                and: [
-                    { username: login.username },
-                    { password: login.password }
-                ],
-            },
-        });
-        var jwt = jsonwebtoken_1.sign({
-            user: {
-                id: currentUser.id,
-                firstname: currentUser.firstname,
-                lastname: currentUser.lastname,
-                username: currentUser.username,
-                email: currentUser.email
-            },
-        }, 'encryption', {
-            issuer: 'auth.akigai',
-            audience: 'akigai',
-        });
-        return {
-            token: jwt,
-        };
+        var currentUser = await this.userRepo.findOne({ where: { username: login.username } });
+        if (await bcrypt.compare(login.password, currentUser.password)) {
+            var jwt = jsonwebtoken_1.sign({
+                user: {
+                    id: currentUser.id,
+                    firstname: currentUser.firstname,
+                    lastname: currentUser.lastname,
+                    username: currentUser.username,
+                    email: currentUser.email
+                },
+            }, 'encryption', {
+                issuer: 'auth.akigai',
+                audience: 'akigai',
+            });
+            return {
+                token: jwt,
+            };
+        }
+        throw new rest_1.HttpErrors.Unauthorized('Incorrect password.');
     }
 };
 __decorate([
