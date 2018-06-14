@@ -21,20 +21,32 @@ let CharitiesController = class CharitiesController {
     constructor(charitiesRepo) {
         this.charitiesRepo = charitiesRepo;
     }
+    //get all charities
+    //for charity list page
     async findCharities(jwt) {
         if (!jwt)
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        var allCharities = await this.charitiesRepo.find();
         try {
             var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
-            console.log(jwtBody);
             return await this.charitiesRepo.find();
         }
         catch (err) {
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
+    //create new charities
     async postCharities(charity) {
         return await this.charitiesRepo.create(charity);
+    }
+    //get one charity by charity id
+    //for charity detail page
+    async findCharityById(id) {
+        let idExists = !!(await this.charitiesRepo.count({ id }));
+        if (!idExists) {
+            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
+        }
+        return await this.charitiesRepo.findById(id);
     }
 };
 __decorate([
@@ -45,12 +57,20 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CharitiesController.prototype, "findCharities", null);
 __decorate([
-    rest_1.post("/charities"),
+    rest_1.post('/charities'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [charities_1.Charities]),
     __metadata("design:returntype", Promise)
 ], CharitiesController.prototype, "postCharities", null);
+__decorate([
+    rest_1.get('/charity/{id}') //:id
+    ,
+    __param(0, rest_1.param.path.number('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], CharitiesController.prototype, "findCharityById", null);
 CharitiesController = __decorate([
     __param(0, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
     __metadata("design:paramtypes", [charities_repository_1.CharitiesRepository])

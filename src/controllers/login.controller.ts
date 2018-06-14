@@ -30,34 +30,32 @@ export class LoginController {
             throw new HttpErrors.Unauthorized('user does not exist');
         }
 
-        var currentUser = await this.userRepo.findOne({
-            where: {
-                and: [
-                    { username: login.username },
-                    { password: login.password }
-                ],
-            },
-        });
+        var users = await this.userRepo.find();
 
-        var jwt = sign(
-            {
-              user: {
-                id: currentUser.id,
-                firstname: currentUser.firstname,
-                lastname: currentUser.lastname,
-                username: currentUser.username,
-                email: currentUser.email
-              },
-            },
-            'encryption',
-            {
-              issuer: 'auth.akigai',
-              audience: 'akigai',
-            },
-          );
-          
-          return {
-            token: jwt,
-          };
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            if (user.username == login.username && await bcrypt.compare(login.password, user.password)) {
+                //return user;
+                var jwt = sign(
+                {
+                  user: {
+                    id: user.id,
+                    firstname: user.firstname,
+                    email: user.email
+                  },
+                },
+                'encryption',
+                {
+                  issuer: 'auth.akigai',
+                  audience: 'akigai',
+                },
+              );
+              
+              return {
+                token: jwt,
+              };
+            }
+   
+            }
         }
     }
