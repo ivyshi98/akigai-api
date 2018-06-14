@@ -31,13 +31,13 @@ let RegistrationController = class RegistrationController {
         }
         let hashedPassword = await bcrypt.hash(newUser.password, 10);
         var userToStore = new users_1.Users();
-        //userToStore.id = newUser.id;
+        userToStore.id = newUser.id;
         userToStore.firstname = newUser.firstname;
         userToStore.lastname = newUser.lastname;
         userToStore.username = newUser.username;
         userToStore.email = newUser.email;
         userToStore.password = hashedPassword;
-        console.log(userToStore);
+        //console.log(userToStore);
         let storedUser = await this.userRepo.create(userToStore);
         storedUser.password = "";
         return storedUser;

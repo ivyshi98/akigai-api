@@ -53,7 +53,6 @@ let LoginController = class LoginController {
                     token: jwt,
                 };
             }
-            //if (currentUser.username == login.username && await bcrypt.compare(login.password, currentUser.password)){
         }
     }
 };
