@@ -18,8 +18,7 @@ const follows_repository_1 = require("../repositories/follows.repository");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const follows_1 = require("../models/follows");
 const charities_repository_1 = require("../repositories/charities.repository");
-const charities_1 = require("../models/charities");
-let FollowsController = class FollowsController {
+let Controller = class Controller {
     constructor(followsRepo, charitiesRepo) {
         this.followsRepo = followsRepo;
         this.charitiesRepo = charitiesRepo;
@@ -45,38 +44,45 @@ let FollowsController = class FollowsController {
         //find the rows with user id
         var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
         var charitiesFollowed = [];
-        var favouriteCharities = new charities_1.Charities();
+        var favouriteCharitiesList = new Array();
         //put all charity ids associated with user id into an array
         for (var i = 0; i < userFollowed.length; i++) {
+            // for (var x = 0; x <charitiesFollowed.length; x++){
+            //   //Check if charity is already in the favourite list
+            //   if (userFollowed[i].charityId != charitiesFollowed[x]){
+            //     charitiesFollowed.push(userFollowed[i].charityId);
+            //   }
+            // }
             charitiesFollowed.push(userFollowed[i].charityId);
         }
         //traverse through the charity ids array to get these charities 
         for (var i = 0; i < charitiesFollowed.length; i++) {
-            favouriteCharities = await this.charitiesRepo.findById(charitiesFollowed[i]);
+            favouriteCharitiesList.push(await this.charitiesRepo.findById(charitiesFollowed[i]));
+            console.log(favouriteCharitiesList);
         }
-        return favouriteCharities;
+        return favouriteCharitiesList;
     }
 };
 __decorate([
-    rest_1.post('/favourites/{charityId}'),
+    rest_1.post('/favourite/{charityId}'),
     __param(0, rest_1.param.query.number('charityId')),
-    __param(1, rest_1.param.query.number('jwt')),
+    __param(1, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", Promise)
-], FollowsController.prototype, "addUserFavourites", null);
+], Controller.prototype, "addUserFavourites", null);
 __decorate([
-    rest_1.get('/favourites/{userId}'),
+    rest_1.get('/favourite'),
     __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], FollowsController.prototype, "findUserFavourites", null);
-FollowsController = __decorate([
+], Controller.prototype, "findUserFavourites", null);
+Controller = __decorate([
     __param(0, repository_1.repository(follows_repository_1.FollowsRepository.name)),
     __param(1, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
     __metadata("design:paramtypes", [follows_repository_1.FollowsRepository,
         charities_repository_1.CharitiesRepository])
-], FollowsController);
-exports.FollowsController = FollowsController;
+], Controller);
+exports.Controller = Controller;
 //# sourceMappingURL=follows.controller.js.map

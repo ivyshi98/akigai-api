@@ -6,7 +6,7 @@ import { Follows } from "../models/follows";
 import { CharitiesRepository } from "../repositories/charities.repository";
 import { Charities } from "../models/charities";
 
-export class FollowsController {
+export class Controller {
   constructor(
     @repository(FollowsRepository.name) private followsRepo: FollowsRepository,
     @repository(CharitiesRepository.name) private charitiesRepo: CharitiesRepository
@@ -14,10 +14,11 @@ export class FollowsController {
 
 
   //create new user and charity matching 
-  @post('/favourites/{charityId}')
+  @post('/favourite/{charityId}')
   async addUserFavourites(
     @param.query.number('charityId') charityId: number,
-    @param.query.number('jwt') jwt: string): Promise<any> {
+    @param.query.string('jwt') jwt: string
+    ): Promise<any> {
     try {
       var jwtBody = verify(jwt, 'encryption') as any;
 
@@ -38,27 +39,36 @@ export class FollowsController {
 
   //"http://localhost:3000/favourites/{userId}?jwt="
   //get charity ids by user id 
-  @get('/favourites')
+  @get('/favourite')
   async findUserFavourites(
-    @param.query.string('jwt') jwt: string):Promise<Charities> {
+    @param.query.string('jwt') jwt: string):Promise<Array<Charities>> {
     var jwtBody = verify(jwt, 'encryption') as any;
 
     //find the rows with user id
     var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
    
     var charitiesFollowed: number[] = [];
-    var favouriteCharities = new Charities();
+
+    var favouriteCharitiesList = new Array();
      //put all charity ids associated with user id into an array
     for (var i = 0; i < userFollowed.length; i++) {
-      charitiesFollowed.push(userFollowed[i].charityId);
+      // for (var x = 0; x <charitiesFollowed.length; x++){
+      //   //Check if charity is already in the favourite list
+      //   if (userFollowed[i].charityId != charitiesFollowed[x]){
+      //     charitiesFollowed.push(userFollowed[i].charityId);
+      //   }
+      // }
+      charitiesFollowed.push(userFollowed[i].charityId);  
     }
 
     //traverse through the charity ids array to get these charities 
     for (var i = 0; i < charitiesFollowed.length; i++) {
-      favouriteCharities = await this.charitiesRepo.findById(charitiesFollowed[i])
+      favouriteCharitiesList.push(await this.charitiesRepo.findById(charitiesFollowed[i]));
+      console.log(favouriteCharitiesList);
+
     }
 
-    return favouriteCharities;
+    return favouriteCharitiesList;
 
   }
 
