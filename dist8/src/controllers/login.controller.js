@@ -46,6 +46,8 @@ let LoginController = class LoginController {
             user: {
                 id: currentUser.id,
                 firstname: currentUser.firstname,
+                lastname: currentUser.lastname,
+                username: currentUser.username,
                 email: currentUser.email
             },
         }, 'encryption', {
