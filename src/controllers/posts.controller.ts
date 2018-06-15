@@ -17,16 +17,15 @@ export class PostsController {
 
   @get('/posts')
   async findCharityPosts(
-    @param.query.number('userId') userId: number,
     @param.query.string('jwt') jwt: string) {
 
     if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
 
     try {
-      var jwtBody = verify(jwt, 'encryption');
+      var jwtBody = verify(jwt, 'encryption') as any;
       console.log(jwtBody);
 
-      var userFollowed = await this.followsRepo.find({ where: { userId: userId } });
+      var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
       var charitiesFollowed: number[] = [];
       for (var i = 0; i < userFollowed.length; i++) {
         charitiesFollowed.push(userFollowed[i].charityId);
