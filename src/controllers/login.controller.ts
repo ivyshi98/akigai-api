@@ -30,6 +30,7 @@ export class LoginController {
             throw new HttpErrors.Unauthorized('user does not exist');
         }
 
+
         var currentUser = await this.userRepo.findOne({where: {username: login.username}});
 
         if (await bcrypt.compare(login.password, currentUser.password)) {
@@ -54,6 +55,7 @@ export class LoginController {
           return {
             token: jwt,
           };
+
         }
 
         throw new HttpErrors.Unauthorized('Incorrect password.');

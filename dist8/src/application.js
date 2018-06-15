@@ -19,7 +19,7 @@ class AkigaiApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin
             port: 3306,
             database: 'akigai',
             user: 'root',
-            password: '',
+            password: '11002288',
         });
         this.dataSource(dataSourceConfig);
         this.projectRoot = __dirname;

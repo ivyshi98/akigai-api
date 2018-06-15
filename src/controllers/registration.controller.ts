@@ -14,9 +14,6 @@ export class RegistrationController {
     @post('/registration')
     async createUser(@requestBody() newUser: Users): Promise<any> {
 
-
-
-
         if (!newUser.username || !newUser.firstname || !newUser.lastname || !newUser.email || !newUser.password) {
             throw new HttpErrors.BadRequest('missing data');
           }

@@ -31,7 +31,6 @@
     "prestart": "npm run build:current",
     "start": "node .",
     "prepublishOnly": "npm run test"
-
   },
   "repository": {
     "type": "git"
