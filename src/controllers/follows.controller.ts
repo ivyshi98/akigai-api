@@ -6,7 +6,7 @@ import { Follows } from "../models/follows";
 import { CharitiesRepository } from "../repositories/charities.repository";
 import { Charities } from "../models/charities";
 
-export class Controller {
+export class FavouriteController {
   constructor(
     @repository(FollowsRepository.name) private followsRepo: FollowsRepository,
     @repository(CharitiesRepository.name) private charitiesRepo: CharitiesRepository
@@ -72,5 +72,33 @@ export class Controller {
     return favouriteCharitiesList;
 
   }
+
+  // //delete favourite charities
+  // @post('/deletefavourite')
+  // async deleteUserFavourites(
+  //   @param.query.number('charityId') charityId: number,
+  //   @param.query.string('jwt') jwt: string
+  //   ){
+  //   try {
+  //     var jwtBody = verify(jwt, 'encryption') as any;
+  //     console.log(jwtBody)
+  //     var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
+  //     var deleteCharity: any;
+
+  //     for (var i = 0; i < userFollowed.length; i++) {
+  //       if (userFollowed[i].charityId == charityId){
+  //         deleteCharity = userFollowed[i];
+  //         //await this.followsRepo.delete(userFollowed[i]);
+  
+  //       } 
+  //     }
+  //     //return await this.followsRepo.delete(deleteCharity);
+
+  //   }
+  //   catch (err) {
+  //     throw new HttpErrors.BadRequest('User invalid');
+  //   }
+  // }
+
 
 }

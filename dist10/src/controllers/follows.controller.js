@@ -18,7 +18,7 @@ const follows_repository_1 = require("../repositories/follows.repository");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const follows_1 = require("../models/follows");
 const charities_repository_1 = require("../repositories/charities.repository");
-let Controller = class Controller {
+let FavouriteController = class FavouriteController {
     constructor(followsRepo, charitiesRepo) {
         this.followsRepo = followsRepo;
         this.charitiesRepo = charitiesRepo;
@@ -58,35 +58,31 @@ let Controller = class Controller {
         //traverse through the charity ids array to get these charities 
         for (var i = 0; i < charitiesFollowed.length; i++) {
             favouriteCharitiesList.push(await this.charitiesRepo.findById(charitiesFollowed[i]));
-<<<<<<< HEAD
             console.log(favouriteCharitiesList);
-=======
-            favouriteCharitiesList;
->>>>>>> origin/master
         }
         return favouriteCharitiesList;
     }
 };
 __decorate([
-    rest_1.post('/favourite/{charityId}'),
+    rest_1.post('/favourite'),
     __param(0, rest_1.param.query.number('charityId')),
     __param(1, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", Promise)
-], Controller.prototype, "addUserFavourites", null);
+], FavouriteController.prototype, "addUserFavourites", null);
 __decorate([
     rest_1.get('/favourite'),
     __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], Controller.prototype, "findUserFavourites", null);
-Controller = __decorate([
+], FavouriteController.prototype, "findUserFavourites", null);
+FavouriteController = __decorate([
     __param(0, repository_1.repository(follows_repository_1.FollowsRepository.name)),
     __param(1, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
     __metadata("design:paramtypes", [follows_repository_1.FollowsRepository,
         charities_repository_1.CharitiesRepository])
-], Controller);
-exports.Controller = Controller;
+], FavouriteController);
+exports.FavouriteController = FavouriteController;
 //# sourceMappingURL=follows.controller.js.map

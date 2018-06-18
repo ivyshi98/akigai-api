@@ -1,7 +1,7 @@
 import { FollowsRepository } from "../repositories/follows.repository";
 import { CharitiesRepository } from "../repositories/charities.repository";
 import { Charities } from "../models/charities";
-export declare class Controller {
+export declare class FavouriteController {
     private followsRepo;
     private charitiesRepo;
     constructor(followsRepo: FollowsRepository, charitiesRepo: CharitiesRepository);
