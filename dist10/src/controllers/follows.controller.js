@@ -62,6 +62,43 @@ let FavouriteController = class FavouriteController {
         }
         return favouriteCharitiesList;
     }
+    //get charity is already favourited by user
+    async checkFavourites(charityId, jwt) {
+        var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+        //find the rows with user id
+        var checkCharity = await this.followsRepo.find({
+            where: {
+                userId: jwtBody.user.id,
+                charityId: charityId
+            }
+        });
+        console.log(checkCharity);
+        if (checkCharity) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    //delete favourite charities
+    async deleteUserFavourites(charityId, jwt) {
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
+            var deleteCharity;
+            for (var i = 0; i < userFollowed.length; i++) {
+                if (userFollowed[i].charityId == charityId) {
+                    deleteCharity = userFollowed[i];
+                    //await this.followsRepo.delete(userFollowed[i]);
+                    console.log(deleteCharity);
+                }
+            }
+            return await this.followsRepo.delete(deleteCharity);
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('User invalid');
+        }
+    }
 };
 __decorate([
     rest_1.post('/favourite'),
@@ -78,6 +115,22 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], FavouriteController.prototype, "findUserFavourites", null);
+__decorate([
+    rest_1.get('/checkfavourite'),
+    __param(0, rest_1.param.query.number('charityId')),
+    __param(1, rest_1.param.query.string('jwt')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:returntype", Promise)
+], FavouriteController.prototype, "checkFavourites", null);
+__decorate([
+    rest_1.del('/deletefavourite'),
+    __param(0, rest_1.param.query.number('charityId')),
+    __param(1, rest_1.param.query.string('jwt')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:returntype", Promise)
+], FavouriteController.prototype, "deleteUserFavourites", null);
 FavouriteController = __decorate([
     __param(0, repository_1.repository(follows_repository_1.FollowsRepository.name)),
     __param(1, repository_1.repository(charities_repository_1.CharitiesRepository.name)),

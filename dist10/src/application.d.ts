@@ -5,11 +5,11 @@ import { Booter, Binding } from '@loopback/boot';
 declare const AkigaiApiApplication_base: (new (...args: any[]) => {
     [x: string]: any;
     projectRoot: string;
-    bootOptions?: import("../node_modules/@loopback/boot/dist8/src/interfaces").BootOptions | undefined;
+    bootOptions?: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/boot/dist8/src/interfaces").BootOptions | undefined;
     boot(): Promise<void>;
-    booters(...booterCls: import("../node_modules/@loopback/context/dist8/src/value-promise").Constructor<Booter>[]): Binding<any>[];
-    component(component: import("../node_modules/@loopback/context/dist8/src/value-promise").Constructor<{}>): void;
-    mountComponentBooters(component: import("../node_modules/@loopback/context/dist8/src/value-promise").Constructor<{}>): void;
+    booters(...booterCls: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/context/dist8/src/value-promise").Constructor<Booter>[]): Binding<any>[];
+    component(component: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/context/dist8/src/value-promise").Constructor<{}>): void;
+    mountComponentBooters(component: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/context/dist8/src/value-promise").Constructor<{}>): void;
 }) & (new (...args: any[]) => {
     [x: string]: any;
     repository(repo: Class<Repository<any>>): void;

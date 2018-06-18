@@ -7,4 +7,6 @@ export declare class FavouriteController {
     constructor(followsRepo: FollowsRepository, charitiesRepo: CharitiesRepository);
     addUserFavourites(charityId: number, jwt: string): Promise<any>;
     findUserFavourites(jwt: string): Promise<Array<Charities>>;
+    checkFavourites(charityId: number, jwt: string): Promise<boolean>;
+    deleteUserFavourites(charityId: number, jwt: string): Promise<boolean>;
 }
