@@ -14,7 +14,7 @@ export class Controller {
 
 
   //create new user and charity matching 
-  @post('/favourite/{charityId}')
+  @post('/favourite')
   async addUserFavourites(
     @param.query.number('charityId') charityId: number,
     @param.query.string('jwt') jwt: string
