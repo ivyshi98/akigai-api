@@ -57,4 +57,50 @@ export class DonationsController {
       }
 
   }
+
+  //create a donation with userId and charityId
+  @post('/createDonation') 
+  async createDonation(
+    @requestBody() newDonation: Donations,
+    @param.query.string('jwt') jwt: string,
+    @param.query.number('charityId') charityId: number,
+    ): Promise<any>{
+
+    if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
+
+    try {
+      var jwtBody = verify(jwt, 'encryption') as any;
+      console.log(jwtBody);
+      
+      newDonation.userId = jwtBody.user.id;
+      newDonation.charityId = charityId;
+
+      var donation = this.donationsRepo.create(newDonation);
+      return donation;
+
+    }
+
+    catch (err) {
+      throw new HttpErrors.BadRequest('JWT token invalid');
+    }
+
+  }
+
+  // @get('/charitiesByUserId') 
+  // async getCharitiesByUserId(@param.query.number('jwt') jwt: string) {
+  //   if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
+
+  //   try {
+  //     var jwtBody = verify(jwt, 'encryption') as any;
+
+  //     //Get all donations associated with a user
+  //     var userDonations = await this.donationsRepo.find({where: {userId: jwtBody.user.id}});
+
+  //     //
+  //   }
+
+  //   catch (err) {
+  //     throw new HttpErrors.BadRequest('JWT token invalid');
+  //   }
+  // }
 }

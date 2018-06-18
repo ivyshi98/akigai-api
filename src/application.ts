@@ -26,6 +26,12 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
     });
     this.dataSource(dataSourceConfig);
 
+    // var dataSourceConfig = new juggler.DataSource({
+    //   name: "db",
+    //   connector: 'memory'
+    // });
+    // this.dataSource(dataSourceConfig);
+
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
     this.bootOptions = {
