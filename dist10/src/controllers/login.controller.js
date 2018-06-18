@@ -34,26 +34,25 @@ let LoginController = class LoginController {
         if (!userExists) {
             throw new rest_1.HttpErrors.Unauthorized('user does not exist');
         }
-        var users = await this.userRepo.find();
-        for (var i = 0; i < users.length; i++) {
-            var user = users[i];
-            if (user.username == login.username && await bcrypt.compare(login.password, user.password)) {
-                //return user;
-                var jwt = jsonwebtoken_1.sign({
-                    user: {
-                        id: user.id,
-                        firstname: user.firstname,
-                        email: user.email
-                    },
-                }, 'encryption', {
-                    issuer: 'auth.akigai',
-                    audience: 'akigai',
-                });
-                return {
-                    token: jwt,
-                };
-            }
+        var currentUser = await this.userRepo.findOne({ where: { username: login.username } });
+        if (await bcrypt.compare(login.password, currentUser.password)) {
+            var jwt = jsonwebtoken_1.sign({
+                user: {
+                    id: currentUser.id,
+                    firstname: currentUser.firstname,
+                    lastname: currentUser.lastname,
+                    username: currentUser.username,
+                    email: currentUser.email
+                },
+            }, 'encryption', {
+                issuer: 'auth.akigai',
+                audience: 'akigai',
+            });
+            return {
+                token: jwt,
+            };
         }
+        throw new rest_1.HttpErrors.Unauthorized('Incorrect password.');
     }
 };
 __decorate([

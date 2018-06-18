@@ -25,13 +25,13 @@ let PostsController = class PostsController {
         this.followsRepo = followsRepo;
         this.charitiesRepo = charitiesRepo;
     }
-    async findCharityPosts(userId, jwt) {
+    async findCharityPosts(jwt) {
         if (!jwt)
             throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
         try {
             var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
             console.log(jwtBody);
-            var userFollowed = await this.followsRepo.find({ where: { userId: userId } });
+            var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
             var charitiesFollowed = [];
             for (var i = 0; i < userFollowed.length; i++) {
                 charitiesFollowed.push(userFollowed[i].charityId);
@@ -103,10 +103,9 @@ let PostsController = class PostsController {
 };
 __decorate([
     rest_1.get('/posts'),
-    __param(0, rest_1.param.query.number('userId')),
-    __param(1, rest_1.param.query.string('jwt')),
+    __param(0, rest_1.param.query.string('jwt')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "findCharityPosts", null);
 __decorate([

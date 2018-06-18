@@ -7,6 +7,6 @@ export declare class PostsController {
     private followsRepo;
     private charitiesRepo;
     constructor(postsRepo: PostsRepository, followsRepo: FollowsRepository, charitiesRepo: CharitiesRepository);
-    findCharityPosts(userId: number, jwt: string): Promise<object[]>;
+    findCharityPosts(jwt: string): Promise<object[]>;
     createPost(post: Posts): Promise<Posts>;
 }
