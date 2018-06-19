@@ -28,21 +28,21 @@ class AkigaiApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin
         //   password: 'Qaz123pl,',
         // });
         // this.dataSource(dataSourceConfig);
+        // var dataSourceConfig = new juggler.DataSource({
+        //   name: "db",
+        //   connector: "loopback-connector-mysql",
+        //   host: process.env.DATABASE_HOST,
+        //   port: 3306,
+        //   database: 'akigai',
+        //   user: process.env.DATABASE_USERNAME,
+        //   password: process.env.DATABASE_PASSWORD,
+        // });
+        // this.dataSource(dataSourceConfig);
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
-            connector: "loopback-connector-mysql",
-            host: process.env.DATABASE_HOST,
-            port: 3306,
-            database: 'akigai',
-            user: process.env.DATABASE_USERNAME,
-            password: process.env.DATABASE_PASSWORD,
+            connector: 'memory'
         });
         this.dataSource(dataSourceConfig);
-        // var dataSourceConfig = new juggler.DataSource({
-        //   name:"db",
-        //   connector:'memory'
-        // });
-        //this.dataSource(dataSourceConfig);
         this.projectRoot = __dirname;
         // Customize @loopback/boot Booter Conventions here
         this.bootOptions = {
