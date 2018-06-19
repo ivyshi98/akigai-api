@@ -100,6 +100,7 @@ export class FavouriteController {
     try {
       var jwtBody = verify(jwt, 'encryption') as any;
       var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
+      //var deleteCharity: Follows;
       var deleteCharity: any;
 
       for (var i = 0; i < userFollowed.length; i++) {

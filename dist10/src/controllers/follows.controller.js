@@ -85,6 +85,7 @@ let FavouriteController = class FavouriteController {
         try {
             var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
             var userFollowed = await this.followsRepo.find({ where: { userId: jwtBody.user.id } });
+            //var deleteCharity: Follows;
             var deleteCharity;
             for (var i = 0; i < userFollowed.length; i++) {
                 if (userFollowed[i].charityId == charityId) {

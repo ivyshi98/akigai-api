@@ -10,26 +10,33 @@ import {BootMixin, Booter, Binding} from '@loopback/boot';
 
 export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplication)) {
   constructor(options?: ApplicationConfig) {
-    super(options);
+    //super(options);
+
+    //if port envrioment is null, go to 3000 
+    super({
+      rest:{
+        port:process.env.PORT || 3000
+      }
+    });
 
     // Set up the custom sequence
     this.sequence(MySequence);
 
-    var dataSourceConfig = new juggler.DataSource({
-      name: "db",
-      connector: "loopback-connector-mysql",
-      host: 'localhost',
-      port: 3306,
-      database: 'akigai',
-      user: 'root',
-      password: 'Qaz123pl,',
-    });
-    this.dataSource(dataSourceConfig);
-
     // var dataSourceConfig = new juggler.DataSource({
-    //   name:"db",
-    //   connector:'memory'
+    //   name: "db",
+    //   connector: "loopback-connector-mysql",
+    //   host: 'localhost',
+    //   port: 3306,
+    //   database: 'akigai',
+    //   user: 'root',
+    //   password: 'Qaz123pl,',
     // });
+    // this.dataSource(dataSourceConfig);
+
+    var dataSourceConfig = new juggler.DataSource({
+      name:"db",
+      connector:'memory'
+    });
     //this.dataSource(dataSourceConfig);
 
     this.projectRoot = __dirname;
