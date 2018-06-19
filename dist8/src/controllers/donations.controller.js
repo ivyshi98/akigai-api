@@ -17,6 +17,7 @@ const repository_1 = require("@loopback/repository");
 const charities_repository_1 = require("../repositories/charities.repository");
 const donations_repository_1 = require("../repositories/donations.repository");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const donations_1 = require("../models/donations");
 let DonationsController = class DonationsController {
     constructor(donationsRepo, charitiesRepo) {
         this.donationsRepo = donationsRepo;
@@ -56,6 +57,22 @@ let DonationsController = class DonationsController {
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
+    //create a donation with userId and charityId
+    async createDonation(newDonation, jwt, charityId) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            console.log(jwtBody);
+            newDonation.userId = jwtBody.user.id;
+            newDonation.charityId = charityId;
+            var donation = this.donationsRepo.create(newDonation);
+            return donation;
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
+    }
 };
 __decorate([
     rest_1.get('/donations'),
@@ -64,6 +81,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], DonationsController.prototype, "getDonationsByUserId", null);
+__decorate([
+    rest_1.post('/createDonation'),
+    __param(0, rest_1.requestBody()),
+    __param(1, rest_1.param.query.string('jwt')),
+    __param(2, rest_1.param.query.number('charityId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [donations_1.Donations, String, Number]),
+    __metadata("design:returntype", Promise)
+], DonationsController.prototype, "createDonation", null);
 DonationsController = __decorate([
     __param(0, repository_1.repository(donations_repository_1.DonationsRepository.name)),
     __param(1, repository_1.repository(charities_repository_1.CharitiesRepository.name)),

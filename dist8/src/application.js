@@ -19,9 +19,14 @@ class AkigaiApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin
             port: 3306,
             database: 'akigai',
             user: 'root',
-            password: '11002288',
+            password: '',
         });
         this.dataSource(dataSourceConfig);
+        // var dataSourceConfig = new juggler.DataSource({
+        //   name: "db",
+        //   connector: 'memory'
+        // });
+        // this.dataSource(dataSourceConfig);
         this.projectRoot = __dirname;
         // Customize @loopback/boot Booter Conventions here
         this.bootOptions = {
