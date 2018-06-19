@@ -22,7 +22,7 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
       port: 3306,
       database: 'akigai',
       user: 'root',
-      password: '',
+      password: 'Qaz123pl,',
     });
     this.dataSource(dataSourceConfig);
 
@@ -31,6 +31,7 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
     //   connector: 'memory'
     // });
     // this.dataSource(dataSourceConfig);
+
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
