@@ -66,21 +66,29 @@ let FavouriteController = class FavouriteController {
     async checkFavourites(charityId, jwt) {
         var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
         //find the rows with user id
+        //  try {
         var checkCharity = await this.followsRepo.find({
             where: {
-                userId: jwtBody.user.id,
-                charityId: charityId
+                and: [
+                    { userId: jwtBody.user.id },
+                    { charityId: charityId }
+                ]
             }
         });
+        //   return true;
+        //  } catch (err) {
+        //    return false;
+        //  }
         console.log(checkCharity);
-        if (checkCharity) {
-            return true;
+        if (checkCharity.length > 0) {
+            return { "favorite": true };
         }
         else {
-            return false;
+            return { "favorite": false };
         }
     }
     //delete favourite charities
+    //should we use path parameter?? 
     async deleteUserFavourites(charityId, jwt) {
         try {
             var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
@@ -93,7 +101,7 @@ let FavouriteController = class FavouriteController {
                     console.log(deleteCharity);
                 }
             }
-            return await this.followsRepo.delete(deleteCharity);
+            return await this.followsRepo.deleteById(deleteCharity.id);
         }
         catch (err) {
             throw new rest_1.HttpErrors.BadRequest('User invalid');

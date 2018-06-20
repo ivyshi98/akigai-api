@@ -74,24 +74,33 @@ export class FavouriteController {
    @get('/checkfavourite')
    async checkFavourites(
      @param.query.number ('charityId') charityId: number,
-     @param.query.string('jwt') jwt: string):Promise<boolean> {
+     @param.query.string('jwt') jwt: string):Promise<any> {
      var jwtBody = verify(jwt, 'encryption') as any;
  
      //find the rows with user id
+    //  try {
      var checkCharity = await this.followsRepo.find({ 
        where: { 
-         userId: jwtBody.user.id,
-        charityId: charityId} });
-      console.log(checkCharity);
-      if (checkCharity){
-        return true;
+         and: [
+          {userId: jwtBody.user.id},
+          {charityId: charityId}
+         ]} 
+      });
+      //   return true;
+      //  } catch (err) {
+      //    return false;
+      //  }
+        console.log(checkCharity);
+      if (checkCharity.length > 0){
+        return {"favorite": true};
       }else{
-        return false;
+        return {"favorite": false};
       }
    }
 
 
   //delete favourite charities
+  //should we use path parameter?? 
   @del('/deletefavourite')
   async deleteUserFavourites(
     @param.query.number('charityId') charityId: number,
@@ -107,10 +116,9 @@ export class FavouriteController {
           deleteCharity = userFollowed[i];
           //await this.followsRepo.delete(userFollowed[i]);
           console.log(deleteCharity);
-  
         } 
       }
-      return await this.followsRepo.delete(deleteCharity);
+      return await this.followsRepo.deleteById(deleteCharity.id);
 
     }
     catch (err) {

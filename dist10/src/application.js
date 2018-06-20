@@ -23,10 +23,10 @@ class AkigaiApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin
         });
         this.dataSource(dataSourceConfig);
         // var dataSourceConfig = new juggler.DataSource({
-        //   name:"db",
-        //   connector:'memory'
+        //   name: "db",
+        //   connector: 'memory'
         // });
-        //this.dataSource(dataSourceConfig);
+        // this.dataSource(dataSourceConfig);
         this.projectRoot = __dirname;
         // Customize @loopback/boot Booter Conventions here
         this.bootOptions = {
