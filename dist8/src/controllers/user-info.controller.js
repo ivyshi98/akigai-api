@@ -39,15 +39,11 @@ let UserInfoController = class UserInfoController {
             var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
             await this.usersRepo.updateById(jwtBody.user.id, obj);
             var changedUser = await this.usersRepo.findById(jwtBody.user.id);
-            console.log(changedUser.password);
             if (changedUser.password.length < 15) {
-                console.log(changedUser.password);
                 let hashedPassword = await bcrypt.hash(changedUser.password, 10);
                 obj.password = hashedPassword;
                 await this.usersRepo.updateById(changedUser.id, obj);
-                console.log(hashedPassword);
             }
-            console.log("longpassword");
             var jwt = jsonwebtoken_1.sign({
                 user: {
                     id: changedUser.id,
