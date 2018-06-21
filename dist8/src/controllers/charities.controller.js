@@ -21,6 +21,18 @@ let CharitiesController = class CharitiesController {
     constructor(charitiesRepo) {
         this.charitiesRepo = charitiesRepo;
     }
+    // @get('/searchCharities')
+    // async searchCharities(@param.query.string('queryText') queryText: string): Promise<Charities[]> {
+    //  // if (!jwt) throw new HttpErrors.Unauthorized('JWT token is required.');
+    //   try {
+    //     //var jwtBody = verify(jwt, 'encryption');
+    //     var allCharities = await this.charitiesRepo.find();
+    //     for (var i = 0, i < ){
+    //     }
+    //   } catch (err) {
+    //     throw new HttpErrors.BadRequest('JWT token invalid');
+    //   }
+    //   }
     //get all charities
     //for charity list page
     async findCharities(jwt) {

@@ -56,7 +56,7 @@ let PaymentMethodsController = class PaymentMethodsController {
                 amount: Math.trunc((payment.amount * 100)),
                 currency: payment.curency,
                 source: token,
-                description: "Charge for " + storedPayment.userId
+                description: "Charge for user " + storedPayment.userId
             });
             return await this.paymentRepo.create(storedPayment);
         }
