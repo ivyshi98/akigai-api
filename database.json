@@ -3,6 +3,7 @@
 
     "live":{
             "driver": "mysql",
+            "port": 3306,
 			"host":{"ENV":"DATABASE_HOST"},
             "password": {"ENV": "DATABASE_PASSWORD"},
             "user":{"ENV":"DATABASE_USERNAME"},
