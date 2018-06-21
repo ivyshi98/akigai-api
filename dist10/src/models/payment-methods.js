@@ -48,7 +48,7 @@ __decorate([
         type: 'string'
     }),
     __metadata("design:type", String)
-], PaymentMethods.prototype, "curency", void 0);
+], PaymentMethods.prototype, "currency", void 0);
 __decorate([
     repository_1.property({
         type: 'number',

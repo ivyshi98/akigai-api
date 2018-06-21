@@ -4,7 +4,7 @@ export declare class PaymentMethods extends Entity {
     cardholder: string;
     paymenttoken: string;
     amount: number;
-    curency: string;
+    currency: string;
     userId: number;
     date: Date;
     time: Date;

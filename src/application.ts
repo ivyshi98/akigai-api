@@ -19,17 +19,32 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
     })
 
     // Set up the custom sequence
+    // Local Configuration
+    
+    // this.sequence(MySequence);
+
+    // var dataSourceConfig = new juggler.DataSource({
+    //   name: "db",
+    //   connector: "loopback-connector-mysql",
+    //   host: "localhost",
+    //   port: 3306,
+
+    //   database: "akigai",
+    //   user: "root",
+    //   password: "Qaz123pl,",
+    // });
+    // this.dataSource(dataSourceConfig);
+
+
     this.sequence(MySequence);
-
     var dataSourceConfig = new juggler.DataSource({
-      name: "db",
-      connector: "loopback-connector-mysql",
-      host: "localhost",
-      port: 3306,
-
-      database: "akigai",
-      user: "root",
-      password: "11002288",
+        name: "db",
+        connector: "loopback-connector-mysql",
+        host: process.env.DATABASE_HOST,
+        port: 3306,
+        database: process.env.DATABASE_NAME,
+        user: process.env.DATABASE_USERNAME,
+        password: process.env.DATABASE_PASSWORD
     });
     this.dataSource(dataSourceConfig);
 

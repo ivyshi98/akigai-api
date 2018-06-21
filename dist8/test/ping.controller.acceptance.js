@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const testlab_1 = require("@loopback/testlab");
 const rest_1 = require("@loopback/rest");
-const _1 = require("../");
+const __1 = require("../");
 describe('PingController', () => {
     let app;
     let server;
@@ -23,7 +23,7 @@ describe('PingController', () => {
         await client.get('/ping?msg=world').expect(200);
     });
     function givenAnApplication() {
-        app = new _1.AkigaiApiApplication({
+        app = new __1.AkigaiApiApplication({
             rest: {
                 port: 0,
             },

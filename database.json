@@ -1,10 +1,13 @@
 {
-    "dev": {
-        "driver": "mysql",
-        "host": "localhost",
-        "port": "3306",
-        "user": "root",
-        "password": "11002288",
-        "database": "akigai"
-    }
+    "defaultEnv": {"ENV": "NODE_ENV"},
+
+    "live":{
+            "driver": "mysql",
+			"host":{"ENV":"DATABASE_HOST"},
+            "password": {"ENV": "DATABASE_PASSWORD"},
+            "user":{"ENV":"DATABSE_USER"},
+            "database":{"ENV":"DATABSE_NAME"} 
+        }
+        
+   
 }
