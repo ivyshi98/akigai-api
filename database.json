@@ -5,8 +5,8 @@
             "driver": "mysql",
 			"host":{"ENV":"DATABASE_HOST"},
             "password": {"ENV": "DATABASE_PASSWORD"},
-            "user":{"ENV":"DATABSE_USER"},
-            "database":{"ENV":"DATABSE_NAME"} 
+            "user":{"ENV":"DATABASE_USERNAME"},
+            "database":{"ENV":"DATABASE_NAME"} 
         }
         
    
