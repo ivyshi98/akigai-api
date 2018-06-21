@@ -29,6 +29,19 @@ export class Charities extends Entity {
     })
     logo: string;
 
+
+    @property({
+        type: 'string',
+        required: true
+    })
+    project: string;
+
+    @property({
+        type: 'string',
+        required: true
+    })
+    contactInfo: string;
+
     @property({
         type: 'number',
         required: true
