@@ -31,7 +31,8 @@
     "prestart": "npm run build:current",
     "start": "node .",
     "prepublishOnly": "npm run test",
-    "amanda": "DATABASE_HOST = localhost DATABASE_NAME=akigai DATABASE_USERNAME=root DATABASE_PASSWORD='' npm start",
+    "amanda": "DATABASE_HOST=localhost DATABASE_NAME=akigai DATABASE_USERNAME=root DATABASE_PASSWORD='' npm start",
+    "ivy": "DATABASE_HOST=localhost DATABASE_NAME=akigai DATABASE_USERNAME=root DATABASE_PASSWORD=Qaz123pl, npm start",
     "live": "db-migrate up && node ."
   },
   "repository": {
