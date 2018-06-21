@@ -48,7 +48,9 @@ __decorate([
     __metadata("design:type", String)
 ], Posts.prototype, "date", void 0);
 Posts = __decorate([
-    repository_1.model()
+    repository_1.model({
+        name: "posts"
+    })
 ], Posts);
 exports.Posts = Posts;
 //# sourceMappingURL=posts.js.map

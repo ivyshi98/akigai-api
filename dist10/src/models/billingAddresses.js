@@ -63,7 +63,9 @@ __decorate([
     __metadata("design:type", Number)
 ], billingAddresses.prototype, "postCode", void 0);
 billingAddresses = __decorate([
-    repository_1.model()
+    repository_1.model({
+        name: "billingAddresses"
+    })
 ], billingAddresses);
 exports.billingAddresses = billingAddresses;
 //# sourceMappingURL=billingAddresses.js.map

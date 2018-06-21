@@ -34,7 +34,9 @@ __decorate([
     __metadata("design:type", String)
 ], Login.prototype, "password", void 0);
 Login = __decorate([
-    repository_1.model()
+    repository_1.model({
+        name: "login"
+    })
 ], Login);
 exports.Login = Login;
 //# sourceMappingURL=login.js.map

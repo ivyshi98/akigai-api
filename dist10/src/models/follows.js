@@ -34,7 +34,9 @@ __decorate([
     __metadata("design:type", Number)
 ], Follows.prototype, "charityId", void 0);
 Follows = __decorate([
-    repository_1.model()
+    repository_1.model({
+        name: "follows"
+    })
 ], Follows);
 exports.Follows = Follows;
 //# sourceMappingURL=follows.js.map

@@ -69,7 +69,9 @@ __decorate([
     __metadata("design:type", Date)
 ], PaymentMethods.prototype, "time", void 0);
 PaymentMethods = __decorate([
-    repository_1.model()
+    repository_1.model({
+        name: "paymentmethods"
+    })
 ], PaymentMethods);
 exports.PaymentMethods = PaymentMethods;
 //# sourceMappingURL=payment-methods.js.map

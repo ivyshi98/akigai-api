@@ -51,7 +51,9 @@ __decorate([
     __metadata("design:type", String)
 ], Donations.prototype, "date", void 0);
 Donations = __decorate([
-    repository_1.model()
+    repository_1.model({
+        name: "donations"
+    })
 ], Donations);
 exports.Donations = Donations;
 //# sourceMappingURL=donations.js.map
