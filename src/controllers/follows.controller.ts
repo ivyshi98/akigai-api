@@ -37,7 +37,7 @@ export class FavouriteController {
   }
 
 
-  //"http://localhost:3000/favourites/{userId}?jwt="
+  //this.getBaseUrl.getBaseUrl() + "/favourites/{userId}?jwt="
   //get charity ids by user id 
   @get('/favourite')
   async findUserFavourites(

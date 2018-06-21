@@ -16,6 +16,7 @@ const repository_1 = require("@loopback/repository");
 const users_repository_1 = require("../repositories/users.repository");
 const rest_1 = require("@loopback/rest");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 let UserInfoController = class UserInfoController {
     constructor(usersRepo) {
         this.usersRepo = usersRepo;
@@ -31,6 +32,39 @@ let UserInfoController = class UserInfoController {
             throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
         }
     }
+    async updateUser(jwt, obj) {
+        if (!jwt)
+            throw new rest_1.HttpErrors.Unauthorized('JWT token is required.');
+        try {
+            var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
+            await this.usersRepo.updateById(jwtBody.user.id, obj);
+            var changedUser = await this.usersRepo.findById(jwtBody.user.id);
+            if (changedUser.password.length < 15) {
+                let hashedPassword = await bcrypt.hash(changedUser.password, 10);
+                obj.password = hashedPassword;
+                await this.usersRepo.updateById(changedUser.id, obj);
+            }
+            var jwt = jsonwebtoken_1.sign({
+                user: {
+                    id: changedUser.id,
+                    firstname: changedUser.firstname,
+                    lastname: changedUser.lastname,
+                    username: changedUser.username,
+                    email: changedUser.email
+                },
+            }, 'encryption', {
+                issuer: 'auth.akigai',
+                audience: 'akigai',
+            });
+            console.log(jwt);
+            return {
+                token: jwt,
+            };
+        }
+        catch (err) {
+            throw new rest_1.HttpErrors.BadRequest('JWT token invalid');
+        }
+    }
 };
 __decorate([
     rest_1.get('/User'),
@@ -39,6 +73,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserInfoController.prototype, "getUser", null);
+__decorate([
+    rest_1.patch('/updateUser'),
+    __param(0, rest_1.param.query.string('jwt')),
+    __param(1, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UserInfoController.prototype, "updateUser", null);
 UserInfoController = __decorate([
     __param(0, repository_1.repository(users_repository_1.UsersRepository.name)),
     __metadata("design:paramtypes", [users_repository_1.UsersRepository])

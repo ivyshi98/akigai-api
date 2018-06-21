@@ -25,36 +25,24 @@ let PaymentMethodsController = class PaymentMethodsController {
         if (!payment.cardholder) {
             throw new rest_1.HttpErrors.BadRequest('Missing required data');
         }
-        //   let paymentMethodExists: boolean = !!(await this.paymentRepo.count(
-        //     { payment_token: payment.payment_token }
-        //     ));
-        //   if (paymentMethodExists) {
-        //     throw new HttpErrors.BadRequest('Card already registered');
-        //   }
         var stripe = require("stripe")("sk_test_HwVPqLsGWOz7sKX7CApdIe6d");
         // Token is created using Checkout or Elements!
         // Get the payment token ID submitted by the form:
         const token = payment.paymenttoken; // Using Express
         var stripe = require("stripe")("sk_test_HwVPqLsGWOz7sKX7CApdIe6d");
-        // stripe.charges.create({
-        //     amount: Math.trunc((payment.amount * 100)),
-        //     currency: payment.curency,
-        //     source: token,
-        //     description: "Charge for " + payment.cardholder
-        // }, );
         try {
             var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');
             var storedPayment = new payment_methods_1.PaymentMethods;
             storedPayment.cardholder = payment.cardholder;
             storedPayment.paymenttoken = payment.paymenttoken;
             storedPayment.amount = payment.amount;
-            storedPayment.currency = payment.curency;
+            storedPayment.currency = payment.currency;
             storedPayment.userId = jwtBody.user.id;
             storedPayment.date = payment.date;
             storedPayment.time = payment.time;
             stripe.charges.create({
                 amount: Math.trunc((payment.amount * 100)),
-                currency: payment.curency,
+                currency: payment.currency,
                 source: token,
                 description: "Charge for user " + storedPayment.userId
             });

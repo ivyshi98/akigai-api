@@ -37,7 +37,7 @@ let FavouriteController = class FavouriteController {
             throw new rest_1.HttpErrors.BadRequest('User invalid');
         }
     }
-    //"http://localhost:3000/favourites/{userId}?jwt="
+    //this.getBaseUrl.getBaseUrl() + "/favourites/{userId}?jwt="
     //get charity ids by user id 
     async findUserFavourites(jwt) {
         var jwtBody = jsonwebtoken_1.verify(jwt, 'encryption');

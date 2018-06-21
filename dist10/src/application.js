@@ -9,17 +9,22 @@ const boot_1 = require("@loopback/boot");
 /* tslint:enable:no-unused-variable */
 class AkigaiApiApplication extends boot_1.BootMixin(repository_1.RepositoryMixin(rest_1.RestApplication)) {
     constructor(options) {
-        super(options);
+        // super(options);
+        super({
+            rest: {
+                port: process.env.PORT || 3000
+            }
+        });
         // Set up the custom sequence
         this.sequence(sequence_1.MySequence);
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
             connector: "loopback-connector-mysql",
-            host: 'localhost',
+            host: "localhost",
             port: 3306,
-            database: 'akigai',
-            user: 'root',
-            password: '11002288',
+            database: "akigai",
+            user: "root",
+            password: "Qaz123pl,",
         });
         this.dataSource(dataSourceConfig);
         // var dataSourceConfig = new juggler.DataSource({
