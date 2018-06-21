@@ -30,7 +30,8 @@
     "posttest": "npm run lint",
     "prestart": "npm run build:current",
     "start": "node .",
-    "prepublishOnly": "npm run test"
+    "prepublishOnly": "npm run test",
+    "amanda": "DATABASE_HOST = localhost DATABASE_NAME=akigai DATABASE_USERNAME=root DATABASE_PASSWORD=''"
   },
   "repository": {
     "type": "git"
