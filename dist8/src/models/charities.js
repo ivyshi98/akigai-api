@@ -45,6 +45,20 @@ __decorate([
 ], Charities.prototype, "logo", void 0);
 __decorate([
     repository_1.property({
+        type: 'string',
+        required: true
+    }),
+    __metadata("design:type", String)
+], Charities.prototype, "project", void 0);
+__decorate([
+    repository_1.property({
+        type: 'string',
+        required: true
+    }),
+    __metadata("design:type", String)
+], Charities.prototype, "contactInfo", void 0);
+__decorate([
+    repository_1.property({
         type: 'number',
         required: true
     }),
