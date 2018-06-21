@@ -30,10 +30,21 @@ exports.up = function(db, done) {
 
     mission: {
       type: 'string',
+      length: 2000,
     },
 
     logo: {
       type: 'string',
+    },
+
+    project: {
+      type: 'string',
+      length: 2000,
+    },
+
+    contactInfo: {
+      type: 'string',
+      length: 500,
     },
 
     charityAddressId: {
