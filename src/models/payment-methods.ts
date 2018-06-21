@@ -29,7 +29,7 @@ export class PaymentMethods extends Entity {
     @property({
         type: 'string'
     })
-    curency: string;
+    currency: string;
 
     @property({
         type: 'number',
