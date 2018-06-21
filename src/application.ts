@@ -29,7 +29,7 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
 
       database: "akigai",
       user: "root",
-      password: "",
+      password: "11002288",
     });
     this.dataSource(dataSourceConfig);
 
