@@ -26,6 +26,7 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
       connector: "loopback-connector-mysql",
       host: "localhost",
       port: 3306,
+
       database: "akigai",
       user: "root",
       password: "",
@@ -37,6 +38,7 @@ export class AkigaiApiApplication extends BootMixin(RepositoryMixin(RestApplicat
     //   connector: 'memory'
     // });
     // this.dataSource(dataSourceConfig);
+
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
