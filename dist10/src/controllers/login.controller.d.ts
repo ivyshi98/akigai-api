@@ -4,4 +4,5 @@ export declare class LoginController {
     private userRepo;
     constructor(userRepo: UsersRepository);
     login(login: Login): Promise<any>;
+    checkUser(login: Login): Promise<any>;
 }

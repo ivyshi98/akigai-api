@@ -5,11 +5,25 @@ import { Booter, Binding } from '@loopback/boot';
 declare const AkigaiApiApplication_base: (new (...args: any[]) => {
     [x: string]: any;
     projectRoot: string;
-    bootOptions?: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/boot/dist8/src/interfaces").BootOptions | undefined;
+    bootOptions?: {
+        [prop: string]: any;
+        controllers?: {
+            dirs?: string | string[] | undefined;
+            extensions?: string | string[] | undefined;
+            nested?: boolean | undefined;
+            glob?: string | undefined;
+        } | undefined;
+        repositories?: {
+            dirs?: string | string[] | undefined;
+            extensions?: string | string[] | undefined;
+            nested?: boolean | undefined;
+            glob?: string | undefined;
+        } | undefined;
+    } | undefined;
     boot(): Promise<void>;
-    booters(...booterCls: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/context/dist8/src/value-promise").Constructor<Booter>[]): Binding<any>[];
-    component(component: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/context/dist8/src/value-promise").Constructor<{}>): void;
-    mountComponentBooters(component: import("../../../../../../Users/ivyshi/Documents/ix/akigai-api/node_modules/@loopback/context/dist8/src/value-promise").Constructor<{}>): void;
+    booters(...booterCls: (new (...args: any[]) => Booter)[]): Binding<any>[];
+    component(component: new (...args: any[]) => {}): void;
+    mountComponentBooters(component: new (...args: any[]) => {}): void;
 }) & (new (...args: any[]) => {
     [x: string]: any;
     repository(repo: Class<Repository<any>>): void;
@@ -22,4 +36,3 @@ export declare class AkigaiApiApplication extends AkigaiApiApplication_base {
     constructor(options?: ApplicationConfig);
     start(): Promise<void>;
 }
-export {};
