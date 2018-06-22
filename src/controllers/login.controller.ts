@@ -1,6 +1,6 @@
 import { repository } from "@loopback/repository";
 import { UsersRepository } from "../repositories/users.repository";
-import { post, requestBody, HttpErrors } from "@loopback/rest";
+import { post, requestBody, HttpErrors, get } from "@loopback/rest";
 import { Login } from "../models/login";
 import { sign, verify} from 'jsonwebtoken'
 
@@ -59,5 +59,31 @@ export class LoginController {
         }
 
         throw new HttpErrors.Unauthorized('Incorrect password.');
+    }
+
+    @post('/checkUser')
+    async checkUser(@requestBody() login: Login): Promise<any> {
+
+        var credentials = {
+            invalid: false,
+            notExist: false,
+        };
+
+        if (!login.username || !login.password) {
+            credentials.invalid = true;
+        }
+
+        let userExists: boolean = !!(await this.userRepo.count({
+            and: [
+                { username: login.username },
+            ],
+        }));
+
+        if (!userExists) {
+            credentials.notExist = true;
+        }
+
+        return credentials;
+
     }
 }

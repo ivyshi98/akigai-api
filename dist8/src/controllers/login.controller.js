@@ -54,6 +54,24 @@ let LoginController = class LoginController {
         }
         throw new rest_1.HttpErrors.Unauthorized('Incorrect password.');
     }
+    async checkUser(login) {
+        var credentials = {
+            invalid: false,
+            notExist: false,
+        };
+        if (!login.username || !login.password) {
+            credentials.invalid = true;
+        }
+        let userExists = !!(await this.userRepo.count({
+            and: [
+                { username: login.username },
+            ],
+        }));
+        if (!userExists) {
+            credentials.notExist = true;
+        }
+        return credentials;
+    }
 };
 __decorate([
     rest_1.post('/login'),
@@ -62,6 +80,13 @@ __decorate([
     __metadata("design:paramtypes", [login_1.Login]),
     __metadata("design:returntype", Promise)
 ], LoginController.prototype, "login", null);
+__decorate([
+    rest_1.post('/checkUser'),
+    __param(0, rest_1.requestBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [login_1.Login]),
+    __metadata("design:returntype", Promise)
+], LoginController.prototype, "checkUser", null);
 LoginController = __decorate([
     __param(0, repository_1.repository(users_repository_1.UsersRepository.name)),
     __metadata("design:paramtypes", [users_repository_1.UsersRepository])
